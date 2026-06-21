@@ -1,6 +1,8 @@
 # Multi-stage build for Next.js static export
-FROM node:22-slim AS builder
+FROM node:22 AS builder
 WORKDIR /app
+ENV CI=1
+ENV NEXT_TELEMETRY_DISABLED=1
 COPY package*.json ./
 RUN npm ci --ignore-scripts
 COPY . .
