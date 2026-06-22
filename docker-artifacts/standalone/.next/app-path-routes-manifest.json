@@ -3,9 +3,9 @@
   "/_global-error/page": "/_global-error",
   "/favicon.ico/route": "/favicon.ico",
   "/page": "/",
-  "/dealer-partner/page": "/dealer-partner",
-  "/architecture/page": "/architecture",
-  "/build-partner/page": "/build-partner",
   "/manifesto/page": "/manifesto",
+  "/architecture/page": "/architecture",
+  "/dealer-partner/page": "/dealer-partner",
+  "/build-partner/page": "/build-partner",
   "/solar-partner/page": "/solar-partner"
 }
