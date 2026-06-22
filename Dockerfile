@@ -1,5 +1,7 @@
 FROM node:20-bookworm AS builder
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV NEXT_DISABLE_SWC=1
+ENV CI=true
 WORKDIR /app
 
 RUN cat /usr/local/bin/node > /usr/local/bin/node.new && \

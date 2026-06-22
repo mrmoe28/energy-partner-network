@@ -5,6 +5,9 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
+  experimental: {
+    webpackBuildWorker: false,
+  },
 };
 
 export default nextConfig;
