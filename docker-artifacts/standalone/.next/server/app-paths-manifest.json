@@ -1,0 +1,11 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/_global-error/page": "app/_global-error/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/page": "app/page.js",
+  "/dealer-partner/page": "app/dealer-partner/page.js",
+  "/architecture/page": "app/architecture/page.js",
+  "/build-partner/page": "app/build-partner/page.js",
+  "/manifesto/page": "app/manifesto/page.js",
+  "/solar-partner/page": "app/solar-partner/page.js"
+}

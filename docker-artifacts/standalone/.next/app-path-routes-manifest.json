@@ -1,0 +1,11 @@
+{
+  "/_not-found/page": "/_not-found",
+  "/_global-error/page": "/_global-error",
+  "/favicon.ico/route": "/favicon.ico",
+  "/page": "/",
+  "/dealer-partner/page": "/dealer-partner",
+  "/architecture/page": "/architecture",
+  "/build-partner/page": "/build-partner",
+  "/manifesto/page": "/manifesto",
+  "/solar-partner/page": "/solar-partner"
+}

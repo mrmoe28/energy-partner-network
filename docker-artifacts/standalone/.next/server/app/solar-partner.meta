@@ -1,0 +1,15 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/solar-partner/layout,_N_T_/solar-partner/page,_N_T_/solar-partner"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/solar-partner/__PAGE__",
+    "/solar-partner",
+    "/_index",
+    "/_head"
+  ]
+}
