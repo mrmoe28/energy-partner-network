@@ -1,6 +1,6 @@
 # Deployment Guide
 
-This project is configured for static export and can be deployed to Coolify.
+This project is configured as a standalone Next.js server and can be deployed to Coolify.
 
 ## Prerequisites
 
@@ -38,7 +38,7 @@ For more details about the Supabase integration, see [SUPABASE_INTEGRATION.md](S
    npm run build
    ```
 
-4. The static files will be generated in the `dist` directory.
+4. The production build will be generated in the `dist` directory.
 
 ## Docker Deployment
 
@@ -60,15 +60,13 @@ To deploy to Coolify:
 
 1. Create a new project in Coolify
 2. Link your GitHub repository
-3. Configure the build settings:
-   - Build command: `npm run build`
-   - Output directory: `dist`
-   - Install command: `npm install` (default)
-4. Coolify will automatically build and deploy your site
+3. Choose a Dockerfile-based deployment so Coolify builds and runs the bundled production container.
+4. Expose port `3000` if Coolify does not detect it automatically.
+5. Coolify will automatically build and deploy your site
 
 ## Environment Variables
 
-Since this is a static site, environment variables should be used only for build-time configuration. Runtime environment variables won't work with static export.
+Runtime environment variables are supported on the server. Browser-exposed values still need the `NEXT_PUBLIC_` prefix and are inlined at build time.
 
 ## Contact Forms
 
