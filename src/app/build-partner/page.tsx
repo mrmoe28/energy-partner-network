@@ -1,11 +1,4 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-
-export const metadata: Metadata = {
-  title: "C² | Build Partner Network",
-  description:
-    "Operational credibility. Execution standards, field trust, and fulfillment maturity presented with trade respect and structure.",
-};
+import { Link } from "react-router-dom";
 
 export default function BuildPartner() {
   return (
@@ -95,7 +88,7 @@ export default function BuildPartner() {
         <div className="mx-auto max-w-6xl px-6 py-20">
           <div className="flex items-center justify-between">
             <Link
-              href="/dealer-partner"
+              to="/dealer-partner"
               className="inline-flex items-center gap-2 text-sm text-text-secondary transition-colors hover:text-accent"
             >
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -104,7 +97,7 @@ export default function BuildPartner() {
               Dealer Partner Network
             </Link>
             <Link
-              href="/solar-partner"
+              to="/solar-partner"
               className="inline-flex items-center gap-2 text-sm text-accent transition-colors hover:text-accent-muted"
             >
               Solar Partner Network

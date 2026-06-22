@@ -1,11 +1,4 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-
-export const metadata: Metadata = {
-  title: "C² | Architecture",
-  description:
-    "Ecosystem structure. The layer map, energy cycle, and architecture behind the C² connected partner system.",
-};
+import { Link } from "react-router-dom";
 
 export default function Architecture() {
   return (
@@ -73,7 +66,7 @@ export default function Architecture() {
               ].map((b) => (
                 <Link
                   key={b.label}
-                  href={b.href}
+                  to={b.href}
                   className="group rounded-xl border border-border bg-surface p-6 text-center transition-all hover:border-accent-muted hover:bg-surface-raised"
                 >
                   <p className="text-xs font-medium uppercase tracking-widest text-accent">{b.label}</p>
@@ -117,7 +110,7 @@ export default function Architecture() {
       <section>
         <div className="mx-auto max-w-6xl px-6 py-20">
           <Link
-            href="/"
+            to="/"
             className="inline-flex items-center gap-2 text-sm text-text-secondary transition-colors hover:text-accent"
           >
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

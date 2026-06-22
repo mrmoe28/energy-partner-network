@@ -1,11 +1,4 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-
-export const metadata: Metadata = {
-  title: "C² | Solar Partner Network",
-  description:
-    "Public trust layer. Editorial education and ecosystem explanation designed to inform first and sell never.",
-};
+import { Link } from "react-router-dom";
 
 export default function SolarPartner() {
   return (
@@ -95,7 +88,7 @@ export default function SolarPartner() {
         <div className="mx-auto max-w-6xl px-6 py-20">
           <div className="flex items-center justify-between">
             <Link
-              href="/build-partner"
+              to="/build-partner"
               className="inline-flex items-center gap-2 text-sm text-text-secondary transition-colors hover:text-accent"
             >
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -104,7 +97,7 @@ export default function SolarPartner() {
               Build Partner Network
             </Link>
             <Link
-              href="/"
+              to="/"
               className="inline-flex items-center gap-2 text-sm text-accent transition-colors hover:text-accent-muted"
             >
               Back to C² HQ

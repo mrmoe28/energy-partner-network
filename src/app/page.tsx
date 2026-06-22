@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import BranchCard from "@/components/BranchCard";
 
 const branches = [
@@ -45,13 +45,13 @@ export default function Home() {
             </p>
             <div className="flex flex-wrap gap-4">
               <Link
-                href="/architecture"
+                to="/architecture"
                 className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:border-accent-muted hover:bg-surface-raised"
               >
                 View ecosystem architecture
               </Link>
               <Link
-                href="/manifesto"
+                to="/manifesto"
                 className="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium text-accent transition-colors hover:text-accent-muted"
               >
                 Read the manifesto

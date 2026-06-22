@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
@@ -18,17 +18,17 @@ export default function Footer() {
             <p className="text-sm font-medium text-text-tertiary uppercase tracking-wider">Branches</p>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/dealer-partner" className="text-text-secondary hover:text-accent transition-colors">
+                <Link to="/dealer-partner" className="text-text-secondary hover:text-accent transition-colors">
                   Dealer Partner Network
                 </Link>
               </li>
               <li>
-                <Link href="/build-partner" className="text-text-secondary hover:text-accent transition-colors">
+                <Link to="/build-partner" className="text-text-secondary hover:text-accent transition-colors">
                   Build Partner Network
                 </Link>
               </li>
               <li>
-                <Link href="/solar-partner" className="text-text-secondary hover:text-accent transition-colors">
+                <Link to="/solar-partner" className="text-text-secondary hover:text-accent transition-colors">
                   Solar Partner Network
                 </Link>
               </li>
@@ -40,12 +40,12 @@ export default function Footer() {
             <p className="text-sm font-medium text-text-tertiary uppercase tracking-wider">System</p>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/manifesto" className="text-text-secondary hover:text-accent transition-colors">
+                <Link to="/manifesto" className="text-text-secondary hover:text-accent transition-colors">
                   Manifesto
                 </Link>
               </li>
               <li>
-                <Link href="/architecture" className="text-text-secondary hover:text-accent transition-colors">
+                <Link to="/architecture" className="text-text-secondary hover:text-accent transition-colors">
                   Architecture
                 </Link>
               </li>

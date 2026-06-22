@@ -1,11 +1,4 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-
-export const metadata: Metadata = {
-  title: "C² | Manifesto",
-  description:
-    "Built to feel inevitable, not loud. The operating principles and philosophy behind the C² ecosystem.",
-};
+import { Link } from "react-router-dom";
 
 export default function Manifesto() {
   return (
@@ -83,7 +76,7 @@ export default function Manifesto() {
       <section>
         <div className="mx-auto max-w-6xl px-6 py-20">
           <Link
-            href="/"
+            to="/"
             className="inline-flex items-center gap-2 text-sm text-text-secondary transition-colors hover:text-accent"
           >
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

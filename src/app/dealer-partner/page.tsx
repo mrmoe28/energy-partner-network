@@ -1,11 +1,4 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-
-export const metadata: Metadata = {
-  title: "C² | Dealer Partner Network",
-  description:
-    "Serious partner growth. Recruiting and onboarding for dealers and sales organizations without hype, pressure, or bro culture.",
-};
+import { Link } from "react-router-dom";
 
 export default function DealerPartner() {
   return (
@@ -95,7 +88,7 @@ export default function DealerPartner() {
         <div className="mx-auto max-w-6xl px-6 py-20">
           <div className="flex items-center justify-between">
             <Link
-              href="/"
+              to="/"
               className="inline-flex items-center gap-2 text-sm text-text-secondary transition-colors hover:text-accent"
             >
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -104,7 +97,7 @@ export default function DealerPartner() {
               Back to C² HQ
             </Link>
             <Link
-              href="/build-partner"
+              to="/build-partner"
               className="inline-flex items-center gap-2 text-sm text-accent transition-colors hover:text-accent-muted"
             >
               Build Partner Network

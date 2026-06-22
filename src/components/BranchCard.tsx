@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "react-router-dom";
 
 interface BranchCardProps {
   href: string;
@@ -10,7 +10,7 @@ interface BranchCardProps {
 export default function BranchCard({ href, label, title, description }: BranchCardProps) {
   return (
     <Link
-      href={href}
+      to={href}
       className="group block rounded-xl border border-border bg-surface p-8 transition-all duration-300 hover:border-accent-muted hover:bg-surface-raised"
     >
       <div className="mb-4 inline-flex items-center gap-2">
