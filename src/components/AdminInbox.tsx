@@ -73,6 +73,14 @@ export default function AdminInbox() {
           fetch(datasetMeta.contact_submissions.endpoint, { credentials: 'include' }),
         ]);
 
+        if (leadsResponse.status === 401 || contactsResponse.status === 401) {
+          throw new Error('Sign in to view the inbox.');
+        }
+
+        if (leadsResponse.status === 403 || contactsResponse.status === 403) {
+          throw new Error('You do not have permission to view the inbox.');
+        }
+
         if (!leadsResponse.ok) {
           throw new Error('Unable to load lead signups.');
         }

@@ -2,21 +2,32 @@ import { createReadStream, existsSync, statSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { extname, join, normalize } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import {
+  createHmac,
+  randomBytes,
+  scryptSync,
+  timingSafeEqual,
+} from 'node:crypto';
 import { Pool } from 'pg';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 const rootDir = process.env.STATIC_ROOT || join(__dirname, 'dist');
 
 const port = Number(process.env.PORT || 3000);
+const sessionCookieName = 'epn_session';
+const sessionSecret = process.env.SESSION_SECRET || 'dev-session-secret-change-me';
+const sessionTtlMs = 1000 * 60 * 60 * 24 * 7;
+const adminEmail = String(
+  process.env.ADMIN_EMAIL ||
+    (process.env.ADMIN_USERNAME ? `${process.env.ADMIN_USERNAME}@local` : 'admin@local'),
+).trim().toLowerCase();
+const adminPassword = process.env.ADMIN_PASSWORD || process.env.BASIC_AUTH_PASSWORD || 'admin';
+const adminDisplayName = process.env.ADMIN_NAME || 'Admin';
 const databaseUrl =
   process.env.DATABASE_URL ||
   process.env.EKOBASE_DATABASE_URL ||
   process.env.SUPABASE_DATABASE_URL ||
   'postgresql://postgres:postgres@127.0.0.1:54332/postgres';
-
-const adminUser = process.env.ADMIN_USERNAME || process.env.BASIC_AUTH_USERNAME || 'admin';
-const adminPass = process.env.ADMIN_PASSWORD || process.env.BASIC_AUTH_PASSWORD || 'admin';
-const basicRealm = 'Energy Partner Network Admin';
 const pool = new Pool({
   connectionString: databaseUrl,
   max: 5,
@@ -57,34 +68,159 @@ function sendText(res, statusCode, text, extraHeaders = {}) {
   res.end(text);
 }
 
-function isAuthorized(req) {
-  const header = req.headers.authorization;
-  if (!header || !header.startsWith('Basic ')) {
-    return false;
-  }
-
-  const decoded = Buffer.from(header.slice(6), 'base64').toString('utf8');
-  const separator = decoded.indexOf(':');
-  if (separator === -1) {
-    return false;
-  }
-
-  const username = decoded.slice(0, separator);
-  const password = decoded.slice(separator + 1);
-  return username === adminUser && password === adminPass;
+function normalizeEmail(value) {
+  return String(value || '').trim().toLowerCase();
 }
 
-function requireAuth(req, res) {
-  if (isAuthorized(req)) {
-    return true;
+function hashPassword(password, salt = randomBytes(16).toString('base64url')) {
+  const hash = scryptSync(password, salt, 64).toString('base64url');
+  return `scrypt$${salt}$${hash}`;
+}
+
+function verifyPassword(password, storedHash) {
+  const parts = String(storedHash || '').split('$');
+  if (parts.length !== 3 || parts[0] !== 'scrypt') {
+    return false;
   }
 
-  res.writeHead(401, {
-    'WWW-Authenticate': `Basic realm="${basicRealm}", charset="UTF-8"`,
-    'Content-Type': 'application/json; charset=utf-8',
-  });
-  res.end(JSON.stringify({ error: 'Authentication required.' }));
-  return false;
+  const [, salt, hash] = parts;
+  const derived = scryptSync(password, salt, 64);
+  const expected = Buffer.from(hash, 'base64url');
+  if (derived.length !== expected.length) {
+    return false;
+  }
+
+  return timingSafeEqual(derived, expected);
+}
+
+function signSession(payload) {
+  const body = Buffer.from(JSON.stringify(payload)).toString('base64url');
+  const signature = createHmac('sha256', sessionSecret).update(body).digest('base64url');
+  return `${body}.${signature}`;
+}
+
+function verifySessionToken(token) {
+  const [body, signature] = String(token || '').split('.');
+  if (!body || !signature) {
+    return null;
+  }
+
+  const expectedSignature = createHmac('sha256', sessionSecret).update(body).digest('base64url');
+  const signatureBuffer = Buffer.from(signature, 'base64url');
+  const expectedBuffer = Buffer.from(expectedSignature, 'base64url');
+  if (
+    signatureBuffer.length !== expectedBuffer.length ||
+    !timingSafeEqual(signatureBuffer, expectedBuffer)
+  ) {
+    return null;
+  }
+
+  try {
+    const payload = JSON.parse(Buffer.from(body, 'base64url').toString('utf8'));
+    if (!payload || typeof payload !== 'object' || typeof payload.exp !== 'number') {
+      return null;
+    }
+
+    if (payload.exp < Date.now()) {
+      return null;
+    }
+
+    return payload;
+  } catch {
+    return null;
+  }
+}
+
+function parseCookies(header) {
+  return String(header || '')
+    .split(';')
+    .map((entry) => entry.trim())
+    .filter(Boolean)
+    .reduce((acc, entry) => {
+      const separator = entry.indexOf('=');
+      if (separator === -1) {
+        return acc;
+      }
+
+      const key = entry.slice(0, separator).trim();
+      const value = entry.slice(separator + 1).trim();
+      acc[key] = decodeURIComponent(value);
+      return acc;
+    }, {});
+}
+
+function serializeCookie(name, value, options = {}) {
+  const parts = [`${name}=${encodeURIComponent(value)}`, 'Path=/'];
+
+  if (options.maxAge !== undefined) {
+    parts.push(`Max-Age=${Math.floor(options.maxAge)}`);
+  }
+
+  if (options.httpOnly !== false) {
+    parts.push('HttpOnly');
+  }
+
+  parts.push(`SameSite=${options.sameSite || 'Lax'}`);
+
+  if (options.secure) {
+    parts.push('Secure');
+  }
+
+  return parts.join('; ');
+}
+
+function getSessionFromRequest(req) {
+  const cookies = parseCookies(req.headers.cookie);
+  const payload = verifySessionToken(cookies[sessionCookieName]);
+  if (!payload) {
+    return null;
+  }
+
+  return {
+    id: payload.id,
+    email: payload.email,
+    display_name: payload.display_name || null,
+    role: payload.role,
+  };
+}
+
+function setSessionCookie(res, token) {
+  res.setHeader(
+    'Set-Cookie',
+    serializeCookie(sessionCookieName, token, {
+      maxAge: sessionTtlMs / 1000,
+      httpOnly: true,
+      sameSite: 'Lax',
+      secure: process.env.NODE_ENV === 'production',
+    }),
+  );
+}
+
+function clearSessionCookie(res) {
+  res.setHeader(
+    'Set-Cookie',
+    serializeCookie(sessionCookieName, '', {
+      maxAge: 0,
+      httpOnly: true,
+      sameSite: 'Lax',
+      secure: process.env.NODE_ENV === 'production',
+    }),
+  );
+}
+
+function requireAuth(req, res, requiredRole = 'admin') {
+  const session = getSessionFromRequest(req);
+  if (!session) {
+    sendJson(res, 401, { error: 'Please sign in to continue.' });
+    return null;
+  }
+
+  if (requiredRole && session.role !== requiredRole) {
+    sendJson(res, 403, { error: 'You do not have access to this area.' });
+    return null;
+  }
+
+  return session;
 }
 
 function normalizeAssetPath(requestPath) {
@@ -254,14 +390,94 @@ async function handleContactPost(req, res) {
   sendJson(res, 201, { ok: true, data: rows[0] });
 }
 
+async function ensureAdminAccount() {
+  const passwordHash = hashPassword(adminPassword);
+  await pool.query(
+    `
+      insert into public.user_accounts (email, display_name, password_hash, role, is_active)
+      values ($1, $2, $3, 'admin', true)
+      on conflict (email)
+      do update set
+        display_name = excluded.display_name,
+        password_hash = excluded.password_hash,
+        role = 'admin',
+        is_active = true,
+        updated_at = timezone('utc'::text, now())
+    `,
+    [adminEmail, adminDisplayName, passwordHash],
+  );
+}
+
+async function handleLoginPost(req, res) {
+  const payload = await parseBody(req);
+  const email = normalizeEmail(payload.email);
+  const password = String(payload.password || '');
+
+  if (!email || !password) {
+    sendJson(res, 400, { error: 'Email and password are required.' });
+    return;
+  }
+
+  const { rows } = await pool.query(
+    `
+      select id, email, display_name, password_hash, role
+      from public.user_accounts
+      where lower(email) = $1 and is_active = true
+      limit 1
+    `,
+    [email],
+  );
+
+  if (rows.length === 0 || !verifyPassword(password, rows[0].password_hash)) {
+    sendJson(res, 401, { error: 'Invalid email or password.' });
+    return;
+  }
+
+  await pool.query(
+    `
+      update public.user_accounts
+      set last_login_at = timezone('utc'::text, now()),
+          updated_at = timezone('utc'::text, now())
+      where id = $1
+    `,
+    [rows[0].id],
+  );
+
+  const user = {
+    id: rows[0].id,
+    email: rows[0].email,
+    display_name: rows[0].display_name,
+    role: rows[0].role,
+  };
+  const token = signSession({
+    ...user,
+    exp: Date.now() + sessionTtlMs,
+  });
+
+  setSessionCookie(res, token);
+  sendJson(res, 200, { ok: true, user });
+}
+
+async function handleLogoutPost(_req, res) {
+  clearSessionCookie(res);
+  sendJson(res, 200, { ok: true });
+}
+
+async function handleSessionGet(req, res) {
+  const user = getSessionFromRequest(req);
+  sendJson(res, 200, { authenticated: Boolean(user), user });
+}
+
 async function handleRead(req, res, tableName) {
-  if (!requireAuth(req, res)) {
+  if (!requireAuth(req, res, 'admin')) {
     return;
   }
 
   const { rows } = await pool.query(`select * from public.${tableName} order by created_at desc`);
   sendJson(res, 200, rows);
 }
+
+await ensureAdminAccount();
 
 const requestHandler = async (req, res) => {
   try {
@@ -270,6 +486,21 @@ const requestHandler = async (req, res) => {
 
     if (pathname === '/api/health') {
       sendJson(res, 200, { ok: true });
+      return;
+    }
+
+    if (req.method === 'GET' && pathname === '/api/session') {
+      await handleSessionGet(req, res);
+      return;
+    }
+
+    if (req.method === 'POST' && pathname === '/api/login') {
+      await handleLoginPost(req, res);
+      return;
+    }
+
+    if (req.method === 'POST' && pathname === '/api/logout') {
+      await handleLogoutPost(req, res);
       return;
     }
 
@@ -293,7 +524,7 @@ const requestHandler = async (req, res) => {
       return;
     }
 
-    if (pathname.startsWith('/admin') && !requireAuth(req, res)) {
+    if (pathname.startsWith('/admin') && !requireAuth(req, res, 'admin')) {
       return;
     }
 
