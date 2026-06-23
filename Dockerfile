@@ -2,7 +2,7 @@ FROM node:22-bookworm-slim AS build
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm ci --unsafe-perm
+RUN npm ci --ignore-scripts
 
 COPY . .
 RUN npm run build
@@ -13,7 +13,7 @@ ENV NODE_ENV=production
 ENV PORT=3000
 
 COPY package*.json ./
-RUN npm ci --omit=dev --unsafe-perm
+RUN npm ci --omit=dev --ignore-scripts
 
 COPY --from=build /app/dist ./dist
 COPY --from=build /app/server.mjs ./server.mjs

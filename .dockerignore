@@ -1,6 +1,8 @@
 node_modules
 .git
 .next
+dist
+docker-artifacts
 .env.local
 .env.*.local
 *.log
