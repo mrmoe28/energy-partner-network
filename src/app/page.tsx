@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import BranchCard from "@/components/BranchCard";
+import LeadSignupForm from "@/components/LeadSignupForm";
 
 const branches = [
   {
@@ -125,6 +126,25 @@ export default function Home() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Lead Signup */}
+      <section className="border-b border-border">
+        <div className="mx-auto grid max-w-6xl gap-10 px-6 py-20 lg:grid-cols-[1fr_1.1fr] lg:items-start">
+          <div className="max-w-xl">
+            <p className="mb-4 text-xs font-medium uppercase tracking-widest text-text-tertiary">
+              Lead Capture
+            </p>
+            <h2 className="mb-6 text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
+              Sign up once. We route it to the right branch.
+            </h2>
+            <p className="max-w-lg text-base leading-relaxed text-text-secondary">
+              Use this form to capture partner interest and route it into Ekobase. The submission
+              is stored in the database, tagged by interest area, and tied back to this page.
+            </p>
+          </div>
+          <LeadSignupForm />
         </div>
       </section>
 

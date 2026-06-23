@@ -40,6 +40,26 @@ create table if not exists contact_submissions (
 );
 ```
 
+The homepage lead capture form stores submissions in the `lead_signups` table:
+
+```sql
+create table if not exists lead_signups (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default timezone('utc'::text, now()),
+  updated_at timestamptz not null default timezone('utc'::text, now()),
+  full_name text not null,
+  email text not null,
+  company text,
+  phone text,
+  partner_interest text not null,
+  notes text,
+  lead_source text not null default 'website',
+  source_page text,
+  status text not null default 'new',
+  consent boolean not null default true
+);
+```
+
 ### Environment Variables
 
 The following environment variables are used for Supabase configuration:
@@ -80,6 +100,25 @@ const { data, error } = await supabase
       message: formData.message,
     }
   ]);
+```
+
+### Lead Signup Component
+
+The homepage `LeadSignupForm` component in `src/components/LeadSignupForm.tsx` stores lead captures in `lead_signups`:
+
+```typescript
+const { error } = await supabase.from('lead_signups').insert([
+  {
+    full_name: formData.fullName,
+    email: formData.email,
+    company: formData.company || null,
+    phone: formData.phone || null,
+    partner_interest: formData.partnerInterest,
+    notes: formData.notes || null,
+    source_page: location.pathname,
+    lead_source: 'website',
+  },
+]);
 ```
 
 ## Admin Management
