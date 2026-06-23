@@ -88,6 +88,16 @@ To deploy to Coolify:
    - `ADMIN_PASSWORD`: Basic auth password for the admin inbox
 6. Coolify will automatically build and deploy your site
 
+If Coolify is running on the same Docker host as the local Ekobase instance, use this exact database URL:
+
+```env
+DATABASE_URL=postgresql://postgres:postgres@172.17.0.1:54332/postgres
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=change-this-before-production
+```
+
+If your Coolify container cannot reach `172.17.0.1`, replace it with the Docker host's reachable IP and keep port `54332`.
+
 ## Environment Variables
 
 Runtime environment variables:
