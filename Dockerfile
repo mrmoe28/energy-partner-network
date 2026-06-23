@@ -1,14 +1,3 @@
-FROM node:22-bookworm-slim AS build
-WORKDIR /app
-
-COPY package*.json ./
-RUN npm ci --ignore-scripts
-RUN find node_modules/esbuild -type f -name esbuild -exec chmod 755 {} +
-RUN npm rebuild esbuild --foreground-scripts
-
-COPY . .
-RUN npm run build
-
 FROM node:22-bookworm-slim AS runtime
 WORKDIR /app
 ENV NODE_ENV=production
@@ -17,8 +6,8 @@ ENV PORT=3000
 COPY package*.json ./
 RUN npm ci --omit=dev --ignore-scripts
 
-COPY --from=build /app/dist ./dist
-COPY --from=build /app/server.mjs ./server.mjs
+COPY server.mjs ./server.mjs
+COPY deploy-dist ./deploy-dist
 
 EXPOSE 3000
 CMD ["npm", "run", "start"]
