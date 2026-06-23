@@ -88,6 +88,17 @@ export default function Navigation() {
             })}
           </nav>
 
+          <Link
+            to="/login"
+            className="hidden items-center gap-2 rounded-full border border-accent/25 bg-accent-subtle px-4 py-2 text-sm font-medium text-accent transition-colors hover:border-accent/45 hover:bg-accent-subtle/80 md:inline-flex"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M20 21a8 8 0 1 0-16 0" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+            Login
+          </Link>
+
           <div className="relative">
             {user ? (
               <>
@@ -134,7 +145,7 @@ export default function Navigation() {
             ) : (
               <Link
                 to="/login"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-surface text-text-secondary transition-colors hover:border-accent/40 hover:text-accent"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-surface text-text-secondary transition-colors hover:border-accent/40 hover:text-accent md:hidden"
                 aria-label="Sign in"
               >
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

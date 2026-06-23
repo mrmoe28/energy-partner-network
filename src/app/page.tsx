@@ -56,6 +56,15 @@ export default function Home() {
                 View ecosystem architecture
               </Link>
               <Link
+                to="/login"
+                className="inline-flex items-center gap-2 rounded-lg border border-accent/30 bg-accent-subtle px-5 py-2.5 text-sm font-medium text-accent transition-colors hover:border-accent/50"
+              >
+                Login
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H3m0 0l4-4m-4 4l4 4" />
+                </svg>
+              </Link>
+              <Link
                 to="/manifesto"
                 className="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium text-accent transition-colors hover:text-accent-muted"
               >
@@ -75,6 +84,21 @@ export default function Home() {
                 energy-partner-network.lock28.com
               </a>
             </div>
+            <Link
+              to="/login"
+              className="mt-4 inline-flex items-center gap-3 rounded-2xl border border-border bg-surface/90 px-4 py-3 text-sm transition-colors hover:border-accent/40 hover:bg-surface-raised"
+            >
+              <span className="flex h-10 w-10 items-center justify-center rounded-full border border-accent/20 bg-accent-subtle text-accent">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M20 21a8 8 0 1 0-16 0" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+              </span>
+              <span className="flex flex-col">
+                <span className="font-medium text-foreground">Open account login</span>
+                <span className="text-xs text-text-secondary">Admin and users use the same sign-in page.</span>
+              </span>
+            </Link>
             </ScrollReveal>
           </div>
         </div>
