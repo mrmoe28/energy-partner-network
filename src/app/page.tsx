@@ -64,15 +64,6 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H3m0 0l4-4m-4 4l4 4" />
                 </svg>
               </Link>
-              <Link
-                to="/manifesto"
-                className="inline-flex items-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium text-accent transition-colors hover:text-accent-muted"
-              >
-                Read the manifesto
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </Link>
             </div>
             <div className="mt-8 inline-flex items-center rounded-full border border-accent/20 bg-accent-subtle px-4 py-2 text-sm text-text-secondary">
               <a
