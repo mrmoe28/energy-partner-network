@@ -56,6 +56,10 @@ The project includes a Dockerfile for containerized deployment:
 
 ## Coolify Deployment
 
+Production URL:
+
+- `https://energy-partner-network.lock28.com`
+
 To deploy to Coolify:
 
 1. Create a new project in Coolify
