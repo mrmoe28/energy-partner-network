@@ -60,6 +60,17 @@ export default function Home() {
                 </svg>
               </Link>
             </div>
+            <div className="mt-8 inline-flex items-center gap-2 rounded-full border border-accent/20 bg-accent-subtle px-4 py-2 text-sm text-text-secondary">
+              <span className="font-medium text-accent">Live URL</span>
+              <a
+                href="https://energy-partner-network.lock28.com"
+                className="font-medium text-foreground underline decoration-accent/40 underline-offset-4 transition-colors hover:text-accent"
+                target="_blank"
+                rel="noreferrer"
+              >
+                energy-partner-network.lock28.com
+              </a>
+            </div>
           </div>
         </div>
 
