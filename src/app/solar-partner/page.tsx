@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export default function SolarPartner() {
   return (
@@ -7,6 +8,7 @@ export default function SolarPartner() {
       <section className="relative overflow-hidden border-b border-border">
         <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
           <div className="max-w-2xl">
+            <ScrollReveal direction="left">
             <p className="mb-4 text-xs font-medium uppercase tracking-widest text-accent">
               03 — Solar Partner Network
             </p>
@@ -16,6 +18,7 @@ export default function SolarPartner() {
             <p className="text-lg leading-relaxed text-text-secondary">
               Editorial education and ecosystem explanation designed to inform first and sell never.
             </p>
+            </ScrollReveal>
           </div>
         </div>
       </section>
@@ -23,9 +26,11 @@ export default function SolarPartner() {
       {/* Pillars */}
       <section className="border-b border-border">
         <div className="mx-auto max-w-6xl px-6 py-20">
+          <ScrollReveal direction="right">
           <p className="mb-10 text-xs font-medium uppercase tracking-widest text-text-tertiary">
             Core Functions
           </p>
+          </ScrollReveal>
           <div className="grid gap-6 md:grid-cols-2">
             {[
               {
@@ -44,13 +49,15 @@ export default function SolarPartner() {
                 title: "Thought Leadership",
                 body: "Positioning the brand as a source of genuine insight on energy, policy, technology, and industry trends — not just another installer voice.",
               },
-            ].map((item) => (
-              <div key={item.title} className="rounded-xl border border-border bg-surface p-6">
+            ].map((item, index) => (
+              <ScrollReveal key={item.title} direction={index % 2 === 0 ? 'left' : 'right'} delay={index * 80}>
+              <div className="rounded-xl border border-border bg-surface p-6">
                 <h3 className="mb-2 text-lg font-semibold tracking-tight text-foreground">
                   {item.title}
                 </h3>
                 <p className="text-sm leading-relaxed text-text-secondary">{item.body}</p>
               </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -59,6 +66,7 @@ export default function SolarPartner() {
       {/* Positioning */}
       <section className="border-b border-border">
         <div className="mx-auto max-w-6xl px-6 py-20">
+          <ScrollReveal direction="left">
           <p className="mb-10 text-xs font-medium uppercase tracking-widest text-text-tertiary">
             Positioning
           </p>
@@ -80,12 +88,14 @@ export default function SolarPartner() {
               ))}
             </div>
           </div>
+          </ScrollReveal>
         </div>
       </section>
 
       {/* Navigation */}
       <section>
         <div className="mx-auto max-w-6xl px-6 py-20">
+          <ScrollReveal direction="right">
           <div className="flex items-center justify-between">
             <Link
               to="/build-partner"
@@ -106,6 +116,7 @@ export default function SolarPartner() {
               </svg>
             </Link>
           </div>
+          </ScrollReveal>
         </div>
       </section>
     </div>

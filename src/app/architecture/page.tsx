@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export default function Architecture() {
   return (
     <div className="space-y-0">
       <section className="border-b border-border">
         <div className="mx-auto max-w-6xl px-6 py-20 md:py-28">
+          <ScrollReveal direction="left">
           <p className="mb-4 text-xs font-medium uppercase tracking-widest text-accent">
             Architecture
           </p>
@@ -19,24 +21,29 @@ export default function Architecture() {
               connected by shared standards, not by shared messaging.
             </p>
           </div>
+          </ScrollReveal>
         </div>
       </section>
 
       {/* Visual diagram */}
       <section className="border-b border-border">
         <div className="mx-auto max-w-6xl px-6 py-20">
+          <ScrollReveal direction="right">
           <p className="mb-10 text-xs font-medium uppercase tracking-widest text-text-tertiary">
             Layer Map
           </p>
+          </ScrollReveal>
 
           <div className="flex flex-col items-center gap-8">
             {/* C² HQ */}
             <div className="w-full max-w-md">
+              <ScrollReveal direction="left">
               <div className="rounded-xl border border-accent/30 bg-accent-subtle p-6 text-center">
                 <p className="text-xs font-medium uppercase tracking-widest text-accent">Root</p>
                 <p className="mt-1 text-lg font-semibold text-foreground">C² — Ecosystem HQ</p>
                 <p className="mt-1 text-sm text-text-secondary">Philosophy, standards, coherence</p>
               </div>
+              </ScrollReveal>
             </div>
 
             {/* Connector */}
@@ -63,9 +70,9 @@ export default function Architecture() {
                   role: "Public trust layer",
                   href: "/solar-partner",
                 },
-              ].map((b) => (
+              ].map((b, index) => (
+                <ScrollReveal key={b.label} direction={index % 2 === 0 ? 'left' : 'right'} delay={index * 80}>
                 <Link
-                  key={b.label}
                   to={b.href}
                   className="group rounded-xl border border-border bg-surface p-6 text-center transition-all hover:border-accent-muted hover:bg-surface-raised"
                 >
@@ -73,6 +80,7 @@ export default function Architecture() {
                   <p className="mt-2 text-base font-semibold text-foreground">{b.title}</p>
                   <p className="mt-1 text-sm text-text-secondary">{b.role}</p>
                 </Link>
+                </ScrollReveal>
               ))}
             </div>
           </div>
@@ -82,6 +90,7 @@ export default function Architecture() {
       {/* Cycle */}
       <section className="border-b border-border">
         <div className="mx-auto max-w-6xl px-6 py-20">
+          <ScrollReveal direction="left">
           <p className="mb-10 text-xs font-medium uppercase tracking-widest text-text-tertiary">
             The Energy Cycle
           </p>
@@ -104,11 +113,13 @@ export default function Architecture() {
               The loop closes back on itself. Every deal returns value to the whole.
             </p>
           </div>
+          </ScrollReveal>
         </div>
       </section>
 
       <section>
         <div className="mx-auto max-w-6xl px-6 py-20">
+          <ScrollReveal direction="right">
           <Link
             to="/"
             className="inline-flex items-center gap-2 text-sm text-text-secondary transition-colors hover:text-accent"
@@ -118,6 +129,7 @@ export default function Architecture() {
             </svg>
             Back to C² HQ
           </Link>
+          </ScrollReveal>
         </div>
       </section>
     </div>

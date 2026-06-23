@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { supabase } from '@/lib/supabaseClient';
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -28,29 +27,29 @@ export default function ContactForm() {
     setSubmitStatus(null);
 
     try {
-      // Insert the form data into Supabase
-      const { data, error } = await supabase
-        .from('contact_submissions')
-        .insert([
-          {
-            name: formData.name,
-            email: formData.email,
-            company: formData.company,
-            partner_type: formData.partnerType,
-            message: formData.message,
-          }
-        ]);
+      const response = await fetch('/api/contact-submissions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          company: formData.company || null,
+          partner_type: formData.partnerType,
+          message: formData.message,
+        }),
+      });
 
-      if (error) {
-        throw new Error(error.message);
+      if (!response.ok) {
+        const errorBody = await response.json().catch(() => null);
+        throw new Error(errorBody?.error || 'Unable to save contact submission.');
       }
 
       setSubmitStatus({
         success: true,
         message: 'Thank you for your submission! We will contact you soon.'
       });
-      
-      // Reset form
       setFormData({
         name: '',
         email: '',

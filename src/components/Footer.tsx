@@ -49,6 +49,11 @@ export default function Footer() {
                   Architecture
                 </Link>
               </li>
+              <li>
+                <Link to="/admin/leads" className="text-text-secondary hover:text-accent transition-colors">
+                  Lead Inbox
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

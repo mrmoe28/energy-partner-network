@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { supabase } from '@/lib/supabaseClient';
 
 type LeadFormData = {
   fullName: string;
@@ -46,8 +45,12 @@ export default function LeadSignupForm() {
     setSubmitStatus(null);
 
     try {
-      const { error } = await supabase.from('lead_signups').insert([
-        {
+      const response = await fetch('/api/lead-signups', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
           full_name: formData.fullName,
           email: formData.email,
           company: formData.company || null,
@@ -56,11 +59,13 @@ export default function LeadSignupForm() {
           notes: formData.notes || null,
           source_page: location.pathname,
           lead_source: 'website',
-        },
-      ]);
+          consent: true,
+        }),
+      });
 
-      if (error) {
-        throw new Error(error.message);
+      if (!response.ok) {
+        const errorBody = await response.json().catch(() => null);
+        throw new Error(errorBody?.error || 'Unable to save lead signup.');
       }
 
       setSubmitStatus({

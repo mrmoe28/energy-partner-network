@@ -1,18 +1,22 @@
 import { Link } from "react-router-dom";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export default function Manifesto() {
   return (
     <div className="space-y-0">
       <section className="border-b border-border">
         <div className="mx-auto max-w-3xl px-6 py-20 md:py-28">
+          <ScrollReveal direction="left">
           <p className="mb-4 text-xs font-medium uppercase tracking-widest text-accent">
             Manifesto
           </p>
           <h1 className="mb-8 text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
             Built to feel inevitable, not loud.
           </h1>
+          </ScrollReveal>
 
           <div className="space-y-8 text-base leading-relaxed text-text-secondary">
+            <ScrollReveal direction="right" delay={80}>
             <p className="text-lg">
               The tone is deliberate: premium, strategic, intelligent, mature, connected,
               trustworthy, architected. Nothing about the system should read as hustle culture,
@@ -24,7 +28,9 @@ export default function Manifesto() {
               effort, clarity to energy, and continuity to every deal that returns value to the
               whole.
             </blockquote>
+            </ScrollReveal>
 
+            <ScrollReveal direction="left" delay={120}>
             <h2 className="text-xl font-semibold tracking-tight text-foreground">Operating Principles</h2>
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
@@ -69,12 +75,14 @@ export default function Manifesto() {
               This document is a living standard. It evolves as the ecosystem evolves, but its
               foundational tone — premium, strategic, architected — is permanent.
             </p>
+            </ScrollReveal>
           </div>
         </div>
       </section>
 
       <section>
         <div className="mx-auto max-w-6xl px-6 py-20">
+          <ScrollReveal direction="right">
           <Link
             to="/"
             className="inline-flex items-center gap-2 text-sm text-text-secondary transition-colors hover:text-accent"
@@ -84,6 +92,7 @@ export default function Manifesto() {
             </svg>
             Back to C² HQ
           </Link>
+          </ScrollReveal>
         </div>
       </section>
     </div>

@@ -6,6 +6,7 @@ import BuildPartner from "./app/build-partner/page";
 import SolarPartner from "./app/solar-partner/page";
 import Manifesto from "./app/manifesto/page";
 import Architecture from "./app/architecture/page";
+import AdminLeadsPage from "./app/admin/leads/page";
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
         <Route path="solar-partner" element={<SolarPartner />} />
         <Route path="manifesto" element={<Manifesto />} />
         <Route path="architecture" element={<Architecture />} />
+        <Route path="admin/leads" element={<AdminLeadsPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>

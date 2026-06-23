@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import BranchCard from "@/components/BranchCard";
 import LeadSignupForm from "@/components/LeadSignupForm";
+import ScrollReveal from "@/components/ScrollReveal";
 
 const branches = [
   {
@@ -33,6 +34,7 @@ export default function Home() {
       <section className="relative overflow-hidden border-b border-border">
         <div className="mx-auto max-w-6xl px-6 py-24 md:py-32">
           <div className="max-w-2xl">
+            <ScrollReveal direction="left">
             <p className="mb-4 text-xs font-medium uppercase tracking-widest text-accent">
               Architectural Center
             </p>
@@ -44,6 +46,8 @@ export default function Home() {
               philosophy, standards, partner structure, and energy flow are held together with
               intention.
             </p>
+            </ScrollReveal>
+            <ScrollReveal direction="right" delay={120}>
             <div className="flex flex-wrap gap-4">
               <Link
                 to="/architecture"
@@ -71,6 +75,7 @@ export default function Home() {
                 energy-partner-network.lock28.com
               </a>
             </div>
+            </ScrollReveal>
           </div>
         </div>
 
@@ -84,6 +89,7 @@ export default function Home() {
       {/* System Logic */}
       <section className="border-b border-border">
         <div className="mx-auto max-w-6xl px-6 py-20">
+          <ScrollReveal direction="left">
           <p className="mb-10 text-xs font-medium uppercase tracking-widest text-text-tertiary">
             System Logic
           </p>
@@ -96,6 +102,7 @@ export default function Home() {
             growth, and field execution are designed to reinforce each other rather than compete
             for attention.
           </p>
+          </ScrollReveal>
 
           <div className="grid gap-6 md:grid-cols-3">
             {[
@@ -114,8 +121,9 @@ export default function Home() {
                 title: "Execution",
                 body: "Build quality closes the loop and protects the reputation of the entire ecosystem.",
               },
-            ].map((item) => (
-              <div key={item.step} className="rounded-xl border border-border bg-surface p-6">
+            ].map((item, index) => (
+              <ScrollReveal key={item.step} direction={index % 2 === 0 ? 'left' : 'right'} delay={index * 90}>
+              <div className="rounded-xl border border-border bg-surface p-6">
                 <p className="mb-3 text-xs font-medium uppercase tracking-widest text-accent">
                   {item.step}
                 </p>
@@ -124,6 +132,7 @@ export default function Home() {
                 </h3>
                 <p className="text-sm leading-relaxed text-text-secondary">{item.body}</p>
               </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -133,6 +142,7 @@ export default function Home() {
       <section className="border-b border-border">
         <div className="mx-auto grid max-w-6xl gap-10 px-6 py-20 lg:grid-cols-[1fr_1.1fr] lg:items-start">
           <div className="max-w-xl">
+            <ScrollReveal direction="left">
             <p className="mb-4 text-xs font-medium uppercase tracking-widest text-text-tertiary">
               Lead Capture
             </p>
@@ -143,14 +153,18 @@ export default function Home() {
               Use this form to capture partner interest and route it into Ekobase. The submission
               is stored in the database, tagged by interest area, and tied back to this page.
             </p>
+            </ScrollReveal>
           </div>
-          <LeadSignupForm />
+          <ScrollReveal direction="right" delay={120}>
+            <LeadSignupForm />
+          </ScrollReveal>
         </div>
       </section>
 
       {/* Locked Architecture */}
       <section className="border-b border-border">
         <div className="mx-auto max-w-6xl px-6 py-20">
+          <ScrollReveal direction="right">
           <p className="mb-10 text-xs font-medium uppercase tracking-widest text-text-tertiary">
             Locked Architecture
           </p>
@@ -162,19 +176,19 @@ export default function Home() {
             not compete with its branches for attention. It governs them. That creates a stronger
             family resemblance and clearer pathways for different audiences.
           </p>
+          </ScrollReveal>
 
           <div className="flex flex-wrap gap-3">
             {[
               "HQ, not storefront",
               "Premium trust layer",
               "Architected growth",
-            ].map((tag) => (
-              <span
-                key={tag}
-                className="inline-flex items-center rounded-full border border-border bg-surface px-4 py-1.5 text-xs font-medium text-text-secondary"
-              >
+            ].map((tag, index) => (
+              <ScrollReveal key={tag} as="span" direction={index % 2 === 0 ? 'left' : 'right'} delay={index * 80}>
+              <span className="inline-flex items-center rounded-full border border-border bg-surface px-4 py-1.5 text-xs font-medium text-text-secondary">
                 {tag}
               </span>
+              </ScrollReveal>
             ))}
           </div>
         </div>
@@ -183,6 +197,7 @@ export default function Home() {
       {/* Priority Order */}
       <section className="border-b border-border">
         <div className="mx-auto max-w-6xl px-6 py-20">
+          <ScrollReveal direction="left">
           <p className="mb-10 text-xs font-medium uppercase tracking-widest text-text-tertiary">
             Priority Order
           </p>
@@ -201,18 +216,21 @@ export default function Home() {
               </li>
             ))}
           </ol>
+          </ScrollReveal>
         </div>
       </section>
 
       {/* Branches */}
       <section>
         <div className="mx-auto max-w-6xl px-6 py-20">
+          <ScrollReveal direction="left">
           <p className="mb-10 text-xs font-medium uppercase tracking-widest text-text-tertiary">
             Connected Branches
           </p>
           <h2 className="mb-10 text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
             Clear identities. Distinct roles.
           </h2>
+          </ScrollReveal>
           <div className="grid gap-6 md:grid-cols-3">
             {branches.map((b) => (
               <BranchCard key={b.href} {...b} />
