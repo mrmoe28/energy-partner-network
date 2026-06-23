@@ -3,6 +3,7 @@ WORKDIR /app
 
 COPY package*.json ./
 RUN npm ci --ignore-scripts
+RUN find node_modules/esbuild -type f -name esbuild -exec chmod 755 {} +
 RUN npm rebuild esbuild --foreground-scripts
 
 COPY . .
